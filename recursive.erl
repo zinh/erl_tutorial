@@ -1,5 +1,5 @@
 -module(recursive).
--export([fac/1, tail_fac/1, duplicate/2, reverse/1, reverse_tail/1]).
+-export([fac/1, tail_fac/1, duplicate/2, reverse/1, reverse_tail/1, sublist/2]).
 
 fac(0) ->
   1;
@@ -34,3 +34,13 @@ reverse_tail([], List) ->
   List;
 reverse_tail([H | T], List) ->
   reverse_tail(T, [H] ++ List).
+
+sublist(N, List) ->
+  sublist(N, List, []).
+
+sublist(_, [], Acc) ->
+  Acc;
+sublist(0, _, Acc) ->
+  Acc;
+sublist(N, [H | T], Acc) when N > 0 ->
+  sublist(N - 1, T, Acc ++ [H]).
