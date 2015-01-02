@@ -1,5 +1,6 @@
 -module(recursive).
--export([fac/1, tail_fac/1, duplicate/2, reverse/1, reverse_tail/1, sublist/2]).
+-compile(export_all).
+% -export([fac/1, tail_fac/1, duplicate/2, reverse/1, reverse_tail/1, sublist/2, zip/2]).
 
 fac(0) ->
   1;
@@ -44,3 +45,11 @@ sublist(0, _, Acc) ->
   Acc;
 sublist(N, [H | T], Acc) when N > 0 ->
   sublist(N - 1, T, Acc ++ [H]).
+
+zip(A, B) ->
+  zip(A, B, []).
+
+zip([], [], Acc) ->
+  Acc;
+zip([H1 | T1], [H2 | T2], Acc) ->
+  zip(T1, T2, Acc ++ [{H1, H2}]).
