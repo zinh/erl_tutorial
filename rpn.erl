@@ -14,6 +14,12 @@ calc(H, Stack) ->
     "-" ->
       {A, B, New_stack} = get_number(Stack),
       push(New_stack, A - B);
+    "*" ->
+      {A, B, New_stack} = get_number(Stack),
+      push(New_stack, A * B);
+    "/" ->
+      {A, B, New_stack} = get_number(Stack),
+      push(New_stack, A / B);
     _ ->
       {A, _} = string:to_integer(H),
       push(Stack, A)
@@ -23,6 +29,7 @@ get_number(Stack) ->
   {A, B, S1} = pop2(Stack),
   {A, B, S1}.
 
+% Stack
 push(Stack, Item) ->
   [Item | Stack].
 
