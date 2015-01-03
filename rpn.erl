@@ -4,24 +4,19 @@
 
 calc(A) ->
   B = string:tokens(A, " "),
-  calc(B, []).
+  lists:foldl(fun calc/2, [], B).
 
-calc([], Stack) ->
-  Stack;
-calc([H|T], Stack) ->
+calc(H, Stack) ->
   case H of
     "+" ->
       {A, B, New_stack} = get_number(Stack),
-      Current_stack = push(New_stack, A + B),
-      calc(T, Current_stack);
+      push(New_stack, A + B);
     "-" ->
       {A, B, New_stack} = get_number(Stack),
-      Current_stack = push(New_stack, A - B),
-      calc(T, Current_stack);
+      push(New_stack, A - B);
     _ ->
       {A, _} = string:to_integer(H),
-      New_stack = push(Stack, A),
-      calc(T, New_stack)
+      push(Stack, A)
   end.
 
 get_number(Stack) ->
@@ -29,7 +24,7 @@ get_number(Stack) ->
   {A, B, S1}.
 
 push(Stack, Item) ->
-  Stack ++ [Item].
+  [Item | Stack].
 
 pop([H|T]) ->
   {H, T}.
