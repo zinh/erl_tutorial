@@ -8,18 +8,9 @@ calc(A) ->
 
 calc(H, Stack) ->
   case H of
-    "+" ->
+    Ops when Ops == "+"; Ops == "-"; Ops == "*"; Ops == "/" ->
       {A, B, New_stack} = get_number(Stack),
-      push(New_stack, A + B);
-    "-" ->
-      {A, B, New_stack} = get_number(Stack),
-      push(New_stack, A - B);
-    "*" ->
-      {A, B, New_stack} = get_number(Stack),
-      push(New_stack, A * B);
-    "/" ->
-      {A, B, New_stack} = get_number(Stack),
-      push(New_stack, A / B);
+      push(New_stack, binary_op(Ops, A, B));
     _ ->
       {A, _} = string:to_integer(H),
       push(Stack, A)
@@ -38,3 +29,15 @@ pop([H|T]) ->
 
 pop2([H1 | [H2 | T]]) ->
   {H1, H2, T}.
+
+binary_op(Ops, A, B) ->
+  case Ops of
+    "+" ->
+      A + B;
+    "-" ->
+      A - B;
+    "*" ->
+      A * B;
+    "/" ->
+      A / B
+  end.
