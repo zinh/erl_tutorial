@@ -1,11 +1,14 @@
 % revert polish notation calculator
 -module(rpn).
--compile(export_all).
+-export([calc/1]).
 
+% public api
 calc(A) ->
   B = string:tokens(A, " "),
-  lists:foldl(fun calc/2, [], B).
+  [Result] = lists:foldl(fun calc/2, [], B),
+  Result.
 
+% private api
 calc(H, Stack) ->
   case H of
     Ops when Ops == "+"; Ops == "-"; Ops == "*"; Ops == "/" ->
@@ -41,3 +44,6 @@ binary_op(Ops, A, B) ->
     "/" ->
       A / B
   end.
+
+t_func([A, B | T]) ->
+  B.
