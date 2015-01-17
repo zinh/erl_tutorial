@@ -22,5 +22,17 @@ loop(Module, State) ->
     {async, Msg} ->
       loop(Module, Module:handle_cast(Msg, State));
     {sync, Pid, Ref, Msg} ->
-      loop(Module, Module:handle_call(Msg, Pid, Ref, State)
-    end.
+      loop(Module, Module:handle_call(Msg, {Pid, Ref}, State))
+  end.
+
+reply({Pid, Ref}, Reply) ->
+  Pid ! {Ref, Reply}.
+
+init(Module, InitState) ->
+  loop(Module, Module:init(InitState)).
+
+start_link(Module, InitState) ->
+  spawn_link(fun() -> init(Module, InitState)).
+
+start(Module, InitSate) ->
+  spawn(fun() -> init(Module, InitState)).
