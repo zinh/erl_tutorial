@@ -1,4 +1,4 @@
 erl_tutorial
 ============
 
-Erlang learning
+Erlang self-learning
