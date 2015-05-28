@@ -9,7 +9,7 @@ start_link(Value, LeaseTime) ->
   Pid.
 
 create(Value, LeaseTime) ->
-  sc_sup:start_child(Value, LeaseTime).
+  sc_element_sup:start_child(Value, LeaseTime).
 
 start(Value, LeaseTime) ->
   {ok, Pid} = gen_server:start(?MODULE, [Value, LeaseTime], []),
