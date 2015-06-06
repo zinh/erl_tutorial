@@ -20,7 +20,7 @@ fetch(Pid) ->
   Value.
 
 delete(Pid) ->
-  get_server:cast(Pid, delete).
+  gen_server:cast(Pid, delete).
 
 replace(Pid, Value) ->
   gen_server:cast(Pid, {replace, Value}).
@@ -30,7 +30,6 @@ init([Value, LeaseTime]) ->
   {ok, #state{value = Value, lease_time = LeaseTime, last_read = Now}, LeaseTime * 1000}.
 
 handle_info(timeout, State) ->
-  io:format("Stopped~n"),
   {stop, normal, State}.
 
 handle_call(fetch, _From, State = #state{value = Value, lease_time = LeaseTime}) ->
@@ -43,8 +42,9 @@ handle_cast({replace, NewValue}, #state{lease_time = LeaseTime} = State) ->
 handle_cast(delete, State) ->
   {stop, normal, State}.
 
-terminate(_Reason, _State) ->
+terminate(_Reason, State) ->
   sc_store:delete(self()),
+  io:format("~p stopped~n", [State#state.value]),
   ok.
 
 code_change(_OldVsn, State, _Extra) ->
